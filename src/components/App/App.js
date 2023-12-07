@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import Article from '../Article/Article';
+import Articles from '../Article/Articles';
 import Header from '../Header/Header';
 import './App.css';
 
@@ -10,7 +10,8 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="/articles" element={<Article />} />
+          <Route path="/" element={<Articles />} exact />
+          <Route path="/articles" element={<Articles />} />
         </Routes>
       </BrowserRouter>
     </div>

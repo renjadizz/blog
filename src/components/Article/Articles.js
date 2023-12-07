@@ -4,8 +4,9 @@ import { Pagination } from 'antd';
 import realWorldApiService from '../../utils/realWorldApiSevice';
 
 import ArticlesCard from './ArticlesCard';
+import './Articles.css';
 
-function Article() {
+function Articles() {
   const [articles, setArticles] = useState();
   const [totalArticles, setTotalArticles] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,4 +45,4 @@ function Article() {
     </div>
   );
 }
-export default Article;
+export default Articles;
