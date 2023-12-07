@@ -1,3 +1,5 @@
+import './Header.css';
+
 function Header() {
   return (
     <div className="header">
@@ -5,7 +7,7 @@ function Header() {
         <p>ReadWorld Blog</p>
       </div>
       <div className="header__right">
-        <button>Log IN</button>
+        <button>Log In</button>
       </div>
     </div>
   );

@@ -24,20 +24,24 @@ function Article() {
     fetchData(currentPage);
   }, [currentPage]);
 
-  return !articles ? (
-    <p>No Articles found</p>
-  ) : (
-    <>
-      {articles.map((element) => {
-        return <ArticlesCard articleInfo={element} key={element.slug} />;
-      })}
-      <Pagination
-        defaultCurrent={1}
-        pageSize={itemsPerPage}
-        total={totalArticles}
-        onChange={(page) => setCurrentPage(page)}
-      />
-    </>
+  return (
+    <div className="articles">
+      {!articles ? (
+        <p>No Articles found</p>
+      ) : (
+        <>
+          {articles.map((element) => {
+            return <ArticlesCard articleInfo={element} key={element.slug} />;
+          })}
+          <Pagination
+            defaultCurrent={1}
+            pageSize={itemsPerPage}
+            total={totalArticles}
+            onChange={(page) => setCurrentPage(page)}
+          />
+        </>
+      )}
+    </div>
   );
 }
 export default Article;
