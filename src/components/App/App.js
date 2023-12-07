@@ -1,19 +1,19 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
-import Articles from '../Article/Articles';
+import Articles from '../Articles/Articles';
 import Header from '../Header/Header';
+import Article from '../Article/Article';
 import './App.css';
 
 function App() {
   return (
     <div className="main">
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Articles />} exact />
-          <Route path="/articles" element={<Articles />} />
-        </Routes>
-      </BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Articles />} />
+        <Route path="/articles/" element={<Articles />} />
+        <Route path="/articles/:id" element={<Article />} />
+      </Routes>
     </div>
   );
 }

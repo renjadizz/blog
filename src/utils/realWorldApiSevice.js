@@ -1,14 +1,14 @@
 import ResourceError from './ResourceError';
 class realWorldApiService {
   _articlesUrl = 'https://api.realworld.io/api/articles?limit=5';
-  _ticketsUrl = 'https://aviasales-test-api.kata.academy/tickets?searchId=';
+  _articleUrl = 'https://api.realworld.io/api/articles/';
 
   async getArticles(pageNumber) {
     const offset = (pageNumber - 1) * 5;
     return await this.sendData(`${this._articlesUrl}&offset=${offset}`);
   }
-  async geTickets(searchId) {
-    return await this.sendData(this._ticketsUrl + searchId);
+  async getArticle(slug) {
+    return await this.sendData(this._articleUrl + slug);
   }
   async sendData(url) {
     try {

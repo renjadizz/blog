@@ -2,17 +2,20 @@ import { Card } from 'antd';
 import { format } from 'date-fns';
 import './ArticlesCard.css';
 import { truncate } from 'lodash';
+import { Link } from 'react-router-dom';
 
 import heartEmpty from '../../icons/heart_empty.svg';
 import heartFull from '../../icons/heart_full.svg';
 
 function ArticlesCard({ articleInfo }) {
-  const { title, description, tagList, favorited, favoritesCount, createdAt, author } = articleInfo;
+  const { slug, title, description, tagList, favorited, favoritesCount, createdAt, author } = articleInfo;
   return (
     <Card className="articles-card">
       <div className="articles-card__header">
         <div className="articles-card__header__left">
-          <span className="articles-card__header__title">{truncate(title, { length: 60 })}</span>
+          <span className="articles-card__header__title">
+            <Link to={`/articles/${slug}`}>{truncate(title, { length: 60 })}</Link>
+          </span>
           <span className="articles-card__header__likes">
             {favorited ? (
               <img src={heartFull} alt="heartFull" className="articles-card__header__heart" />
