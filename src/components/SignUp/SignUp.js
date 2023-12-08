@@ -1,12 +1,25 @@
 /* eslint-disable quotes */
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { Card, Form, Input, Checkbox, Button } from 'antd';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
+
+import realWorldApiService from '../../utils/realWorldApiSevice';
 import './SignUp.css';
 
 function SignUp() {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (successMessage) {
+      setTimeout(() => {
+        navigate('/sign-in');
+      }, 5000);
+    }
+  }, [successMessage]);
   const signUpSchema = z
     .object({
       username: z
@@ -19,7 +32,7 @@ function SignUp() {
         .min(6, { message: 'Password must be at least 6 characters' })
         .max(40, { message: "Password can't be longer than 40 characters" }),
       confirmPassword: z.string(),
-      agree: z.boolean(),
+      agree: z.boolean({ required_error: 'Must be checked' }),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: 'Passwords must match',
@@ -30,10 +43,32 @@ function SignUp() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    setError,
   } = useForm({ resolver: zodResolver(signUpSchema) });
-  const onSubmit = () => {
-    console.log('qwe');
-    reset();
+  const onSubmit = async (data) => {
+    let apiService = new realWorldApiService();
+    const response = await apiService.signUp(
+      JSON.stringify({ user: { username: data.username, email: data.email, password: data.password } })
+    );
+    const responseData = await response.json();
+    if (!response.ok) {
+      setErrorMessage('Error number is ' + response.status);
+      if (responseData.errors) {
+        const errors = responseData.errors;
+        if (errors.username) {
+          setError('username', { type: 'server', message: errors.username });
+        } else if (errors.email) {
+          setError('email', { type: 'server', message: errors.email });
+        } else if (errors.password) {
+          setError('password', { type: 'server', message: errors.password });
+        }
+      }
+      return;
+    } else {
+      setErrorMessage(null);
+      setSuccessMessage('Sign Up was successfull you will be redirected after 5 seconds');
+      reset();
+    }
   };
   return (
     <div className="sign-up-form">
@@ -87,6 +122,8 @@ function SignUp() {
               Create
             </Button>
           </Form.Item>
+          {errorMessage ? <p className="form-error-message">{errorMessage}</p> : null}
+          {successMessage ? <p className="form-success-message">{successMessage}</p> : null}
         </Form>
         <p className="link-to-sign-in">
           Already have an account? <Link to="/sign-in">Sign in.</Link>

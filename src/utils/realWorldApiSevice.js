@@ -10,6 +10,15 @@ class realWorldApiService {
   async getArticle(slug) {
     return await this.sendData(this._articleUrl + slug);
   }
+  async signUp(data) {
+    return await fetch('https://api.realworld.io/api/users', {
+      method: 'POST',
+      body: data,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
   async sendData(url) {
     try {
       const res = await fetch(url);
