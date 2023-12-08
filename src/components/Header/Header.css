@@ -4,10 +4,19 @@
     align-items: center;
     background-color: white;
     margin-bottom: 1rem;
+    padding: 1rem;
 }
 .header__right{
     padding-right: 5rem;
 }
 .header__left{
     padding-left: 5rem;
+}
+.ant-btn-text{
+    font-family: Inter;
+    font-size: 1rem;
+}
+.ant-btn-text:hover, .ant-btn-text:hover span {
+    color: #52c41a;
+    border-color: #52c41a;
 }
