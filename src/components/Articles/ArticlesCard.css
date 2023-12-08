@@ -1,58 +1,58 @@
-.articles-card{
-    width: 65%;
-    display: grid;
-    gap: 1rem;
+.articles-card {
+  width: 65%;
+  display: grid;
+  gap: 1rem;
 }
-.articles-card span{
-    font-family: Inter, system-ui;
-    margin-right: 0.2rem;
+.articles-card span {
+  font-family: Inter, system-ui;
+  margin-right: 0.2rem;
 }
-.articles-card__header{
-    display: grid;
-    grid-template-columns: 70% 30%;
-    align-items: baseline;
+.articles-card__header {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  align-items: baseline;
 }
-.articles-card__header__title{
-    font-size: 1rem;
-    color:#1890FF;
+.articles-card__header__title {
+  font-size: 1rem;
+  color: #1890ff;
 }
-.articles-card__header__likes{
-    display: inline-block;
-    white-space: nowrap; 
-    width: auto;
+.articles-card__header__likes {
+  display: inline-block;
+  white-space: nowrap;
+  width: auto;
 }
-.articles-card__header__heart{
-    margin-right: 0.2rem;
-    vertical-align:text-top;
+.articles-card__header__heart {
+  margin-right: 0.2rem;
+  vertical-align: text-top;
 }
-.articles-card__header__tags{
-    font-size: 0.7rem;
-    background-color: #FAFAFA;
-    border-radius: 10%;
-    border: 0.1rem solid black;
-    padding: 0.1rem;
-    margin-right: 0.2rem;
-    color: black;
+.articles-card__header__tags {
+  font-size: 0.7rem;
+  background-color: #fafafa;
+  border-radius: 10%;
+  border: 0.1rem solid black;
+  padding: 0.1rem;
+  margin-right: 0.2rem;
+  color: black;
 }
-.articles-card__header--color-gray{
-    color:gray
+.articles-card__header--color-gray {
+  color: gray;
 }
-.articles-card__header__right{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+.articles-card__header__right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
-.articles-card__header__right p{
-    margin: 0;
+.articles-card__header__right p {
+  margin: 0;
 }
-.articles-card__header__author-name{
-    font-size: 1rem;
+.articles-card__header__author-name {
+  font-size: 1rem;
 }
-.articles-card__header__author-date{
-    font-size: 0.7rem;
-    color: grey
+.articles-card__header__author-date {
+  font-size: 0.7rem;
+  color: grey;
 }
-.articles-card__header__author-img{
-    margin-left:0.5rem;
-    border-radius: 50%;
+.articles-card__header__author-img {
+  margin-left: 0.5rem;
+  border-radius: 50%;
 }

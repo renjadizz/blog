@@ -71,7 +71,8 @@
   "lint-staged": {
     "src/**/*.{js}": [
       "npm run lint:fix "
-    ],"src/**/*.{js,jsx,css}": [
+    ],
+    "src/**/*.{js,jsx,css}": [
       "npm run format"
     ]
   }
