@@ -3,7 +3,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { Card, Form, Input, Checkbox, Button } from 'antd';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from 'react-router-dom';
 import './SignUp.css';
+
 function SignUp() {
   const signUpSchema = z
     .object({
@@ -11,7 +13,7 @@ function SignUp() {
         .string()
         .min(3, { message: 'Username must be at least 3 characters' })
         .max(20, { message: "Username can't be longer than 20 characters" }),
-      email: z.string(),
+      email: z.string().email(),
       password: z
         .string()
         .min(6, { message: 'Password must be at least 6 characters' })
@@ -36,22 +38,39 @@ function SignUp() {
   return (
     <div className="sign-up-form">
       <Card>
+        <h2 className="sign-up-form__header">Create new account</h2>
         <Form onFinish={handleSubmit(onSubmit)} layout="vertical">
           <Form.Item label="Username">
-            <Controller name="username" control={control} render={({ field }) => <Input {...field} />} />
-            {errors.username && <p>{errors.username.message}</p>}
+            <Controller
+              name="username"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Username" />}
+            />
+            {errors.username && <p className="form-error-message">{errors.username.message}</p>}
           </Form.Item>
           <Form.Item label="Email">
-            <Controller name="email" control={control} render={({ field }) => <Input {...field} />} />
-            {errors.email && <p>{errors.email.message}</p>}
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Email" />}
+            />
+            {errors.email && <p className="form-error-message">{errors.email.message}</p>}
           </Form.Item>
           <Form.Item label="Password">
-            <Controller name="password" control={control} render={({ field }) => <Input {...field} />} />
-            {errors.password && <p>{errors.password.message}</p>}
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Password" />}
+            />
+            {errors.password && <p className="form-error-message">{errors.password.message}</p>}
           </Form.Item>
-          <Form.Item label="Confirm password">
-            <Controller name="confirmPassword" control={control} render={({ field }) => <Input {...field} />} />
-            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+          <Form.Item label="Repeat password">
+            <Controller
+              name="confirmPassword"
+              control={control}
+              render={({ field }) => <Input {...field} placeholder="Password" />}
+            />
+            {errors.confirmPassword && <p className="form-error-message">{errors.confirmPassword.message}</p>}
           </Form.Item>
           <Controller
             name="agree"
@@ -62,13 +81,16 @@ function SignUp() {
               </Checkbox>
             )}
           />
-          {errors.agree && <p>{errors.agree.message}</p>}
+          {errors.agree && <p className="form-error-message">{errors.agree.message}</p>}
           <Form.Item>
-            <Button type="primary" htmlType="submit" disabled={isSubmitting}>
-              Submit
+            <Button className="sign-up-form__submitBtn" type="primary" htmlType="submit" disabled={isSubmitting}>
+              Create
             </Button>
           </Form.Item>
         </Form>
+        <p className="link-to-sign-in">
+          Already have an account? <Link to="/sign-in">Sign in.</Link>
+        </p>
       </Card>
     </div>
   );
