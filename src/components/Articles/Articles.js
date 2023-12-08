@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Pagination } from 'antd';
 
+import Loading from '../Loading/Loading';
 import realWorldApiService from '../../utils/realWorldApiSevice';
 
 import ArticlesCard from './ArticlesCard';
@@ -10,13 +11,20 @@ function Articles() {
   const [articles, setArticles] = useState();
   const [totalArticles, setTotalArticles] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const itemsPerPage = 5;
   async function fetchData(pageNumber) {
+    setLoading(true);
     let data = new realWorldApiService();
     data = await data.getArticles(pageNumber);
-    setTotalArticles(data.articlesCount);
-    let articlesAll = data.articles;
-    setArticles(articlesAll);
+    if (data instanceof Error) setError(error.message);
+    else {
+      setTotalArticles(data.articlesCount);
+      let articlesAll = data.articles;
+      setArticles(articlesAll);
+    }
+    setLoading(false);
   }
   useEffect(() => {
     fetchData(currentPage);
@@ -27,12 +35,13 @@ function Articles() {
 
   return (
     <div className="articles">
-      {!articles ? (
-        <p>No Articles found</p>
-      ) : (
+      {loading ? <Loading /> : null}
+      {error ? <h1>{error}</h1> : null}
+      {!loading && !articles ? <p>No Articles found</p> : null}
+      {articles ? (
         <>
           {articles.map((element) => {
-            return <ArticlesCard articleInfo={element} key={element.slug} />;
+            return <ArticlesCard articleInfo={element} isFull={false} key={element.slug} />;
           })}
           <Pagination
             defaultCurrent={1}
@@ -41,7 +50,7 @@ function Articles() {
             onChange={(page) => setCurrentPage(page)}
           />
         </>
-      )}
+      ) : null}
     </div>
   );
 }

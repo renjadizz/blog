@@ -3,18 +3,23 @@ import { format } from 'date-fns';
 import './ArticlesCard.css';
 import { truncate } from 'lodash';
 import { Link } from 'react-router-dom';
+import Markdown from 'react-markdown';
 
 import heartEmpty from '../../icons/heart_empty.svg';
 import heartFull from '../../icons/heart_full.svg';
 
-function ArticlesCard({ articleInfo }) {
-  const { slug, title, description, tagList, favorited, favoritesCount, createdAt, author } = articleInfo;
+function ArticlesCard({ articleInfo, isFull }) {
+  const { slug, title, description, tagList, favorited, favoritesCount, createdAt, author, body = null } = articleInfo;
+  let renderString = '';
+  if (body) {
+    renderString = body.replace(/\\n/g, '\n');
+  }
   return (
     <Card className="articles-card">
       <div className="articles-card__header">
         <div className="articles-card__header__left">
           <span className="articles-card__header__title">
-            <Link to={`/articles/${slug}`}>{truncate(title, { length: 60 })}</Link>
+            <Link to={`/articles/${slug}`}>{isFull ? title : truncate(title, { length: 60 })}</Link>
           </span>
           <span className="articles-card__header__likes">
             {favorited ? (
@@ -26,12 +31,17 @@ function ArticlesCard({ articleInfo }) {
           </span>
           <div>
             {tagList.map((object, i) => (
-              <span className="articles-card__header__tags" key={i}>
+              <span
+                className={'articles-card__header__tags ' + (isFull ? 'articles-card__header--color-gray' : '')}
+                key={i}
+              >
                 {object}
               </span>
             ))}
           </div>
-          <div>{truncate(description, { length: 150 })}</div>
+          <div className={isFull ? 'articles-card__header--color-gray' : ''}>
+            {isFull ? description : truncate(description, { length: 150 })}
+          </div>
         </div>
         <div className="articles-card__header__right">
           <div>
@@ -43,6 +53,11 @@ function ArticlesCard({ articleInfo }) {
           </div>
         </div>
       </div>
+      {body ? (
+        <div>
+          <Markdown>{renderString}</Markdown>
+        </div>
+      ) : null}
     </Card>
   );
 }

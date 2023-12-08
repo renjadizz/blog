@@ -34,6 +34,9 @@
     margin-right: 0.2rem;
     color: black;
 }
+.articles-card__header--color-gray{
+    color:gray
+}
 .articles-card__header__right{
     display: flex;
     justify-content: flex-end;
