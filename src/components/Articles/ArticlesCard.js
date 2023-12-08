@@ -53,7 +53,7 @@ function ArticlesCard({ articleInfo, isFull }) {
           </div>
         </div>
       </div>
-      {body ? (
+      {isFull ? (
         <div>
           <Markdown>{renderString}</Markdown>
         </div>
