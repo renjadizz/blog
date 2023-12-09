@@ -25,9 +25,9 @@ function Profile() {
       .string()
       .min(3, { message: 'Username must be at least 3 characters' })
       .max(20, { message: "Username can't be longer than 20 characters" }),
-    email: z.string().email(),
+    email: z.string().email({ message: 'Invalid email address' }),
     bio: z.string().max(40, { message: "Password can't be longer than 40 characters" }),
-    image: z.string(),
+    image: z.string().url({ message: 'Invalid url' }),
   });
   const {
     control,
