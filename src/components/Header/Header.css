@@ -17,6 +17,9 @@
   align-items: center;
   gap: 0.2rem;
 }
+.profile:hover {
+  color: #52c41a;
+}
 .header__left {
   padding-left: 5rem;
 }

@@ -5,6 +5,7 @@ import Header from '../Header/Header';
 import Article from '../Article/Article';
 import SignUp from '../SignUp/SignUp';
 import SignIn from '../SignIn/SignIn';
+import Profile from '../Profile/Profile';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/articles/:id" element={<Article />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
   );

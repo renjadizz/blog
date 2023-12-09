@@ -7,10 +7,13 @@ function Header() {
   const handleHomeClick = () => navigate('/');
   const handleSignInClick = () => navigate('/sign-in');
   const handleSignUpClick = () => navigate('/sign-up');
-  const handleCreateNewArticle = () => navigate('/new-article');
+  const handleCreateNewArticleClick = () => navigate('/new-article');
   const handleLogOutClick = () => {
     localStorage.removeItem('user');
     navigate('/');
+  };
+  const handleProfileClick = () => {
+    navigate('/profile');
   };
   const userStorage = localStorage.getItem('user');
   let user = null;
@@ -20,10 +23,10 @@ function Header() {
 
   const userSide = user ? (
     <>
-      <Button type="text" onClick={handleCreateNewArticle}>
+      <Button type="text" onClick={handleCreateNewArticleClick}>
         Create Article
       </Button>
-      <div className="profile">
+      <div className="profile" onClick={handleProfileClick}>
         <span>{user.user.username}</span>
         <img src={user.user.image} className="profile-image" />
       </div>
