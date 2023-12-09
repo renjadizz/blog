@@ -17,7 +17,7 @@ function SignUp() {
     if (successMessage) {
       setTimeout(() => {
         navigate('/sign-in');
-      }, 5000);
+      }, 2000);
     }
   }, [successMessage]);
   const signUpSchema = z
@@ -66,7 +66,7 @@ function SignUp() {
       return;
     } else {
       setErrorMessage(null);
-      setSuccessMessage('Sign Up was successfull you will be redirected after 5 seconds');
+      setSuccessMessage('Sign Up was successfull you will be redirected after 2 seconds');
       reset();
     }
   };
@@ -122,8 +122,8 @@ function SignUp() {
               Create
             </Button>
           </Form.Item>
-          {errorMessage ? <p className="form-error-message">{errorMessage}</p> : null}
-          {successMessage ? <p className="form-success-message">{successMessage}</p> : null}
+          {errorMessage ? <p className="form-error-message form-message--align-center">{errorMessage}</p> : null}
+          {successMessage ? <p className="form-success-message form-message--align-center">{successMessage}</p> : null}
         </Form>
         <p className="link-to-sign-in">
           Already have an account? <Link to="/sign-in">Sign in.</Link>

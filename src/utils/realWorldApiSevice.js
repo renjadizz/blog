@@ -19,6 +19,15 @@ class realWorldApiService {
       },
     });
   }
+  async signIn(data) {
+    return await fetch('https://api.realworld.io/api/users/login', {
+      method: 'POST',
+      body: data,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
   async sendData(url) {
     try {
       const res = await fetch(url);
