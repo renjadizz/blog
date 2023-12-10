@@ -7,6 +7,7 @@ import SignUp from '../SignUp/SignUp';
 import SignIn from '../SignIn/SignIn';
 import Profile from '../Profile/Profile';
 import ArticleNew from '../Article/ArticleNew';
+import NotFound from '../NotFound/NotFound';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/new-article" element={<ArticleNew />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

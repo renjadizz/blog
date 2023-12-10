@@ -15,7 +15,7 @@ function Article() {
     setLoading(true);
     let data = new realWorldApiService();
     data = await data.getArticle(id);
-    if (data instanceof Error) setError(error.message);
+    if (data instanceof Error) setError('Article was not Found');
     else setArticle(data.article);
     setLoading(false);
   }
