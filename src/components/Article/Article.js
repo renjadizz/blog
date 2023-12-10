@@ -11,6 +11,7 @@ function Article() {
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [user, setUser] = useState(null);
   async function fetchData() {
     setLoading(true);
     let data = new realWorldApiService();
@@ -21,13 +22,18 @@ function Article() {
   }
   useEffect(() => {
     fetchData();
+    let auth = localStorage.getItem('user');
+    if (auth) {
+      auth = JSON.parse(auth);
+      setUser(auth.user);
+    }
   }, []);
 
   return (
     <div className="articles">
       {loading ? <Loading /> : null}
       {error ? <h1>{error}</h1> : null}
-      {article ? <ArticlesCard articleInfo={article} isFull={true} /> : null}
+      {article ? <ArticlesCard articleInfo={article} isFull={true} user={user} /> : null}
     </div>
   );
 }

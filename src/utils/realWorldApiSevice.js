@@ -10,6 +10,15 @@ class realWorldApiService {
   async getArticle(slug) {
     return await this.sendData(this._articleUrl + slug);
   }
+  async articleDelete(slug, token) {
+    return await fetch(this._articleUrl + slug, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  }
   async signUp(data) {
     return await fetch('https://api.realworld.io/api/users', {
       method: 'POST',
@@ -33,7 +42,6 @@ class realWorldApiService {
       method: 'PUT',
       body: data,
       headers: {
-        // eslint-disable-next-line prettier/prettier
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
@@ -44,7 +52,6 @@ class realWorldApiService {
       method: 'POST',
       body: data,
       headers: {
-        // eslint-disable-next-line prettier/prettier
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
