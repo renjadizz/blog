@@ -55,4 +55,5 @@
 .articles-card__header__author-img {
   margin-left: 0.5rem;
   border-radius: 50%;
+  width: 46px;
 }

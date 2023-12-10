@@ -39,6 +39,17 @@ class realWorldApiService {
       },
     });
   }
+  async articleNew(data, token) {
+    return await fetch('https://api.realworld.io/api/articles', {
+      method: 'POST',
+      body: data,
+      headers: {
+        // eslint-disable-next-line prettier/prettier
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  }
   async sendData(url) {
     try {
       const res = await fetch(url);
