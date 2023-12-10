@@ -31,7 +31,7 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
   }
   const handleEditClick = () => {
     let article = [slug, title, description, body, tagList];
-    navigate('/edit-article', { state: article });
+    navigate(`/articles/${slug}/edit`, { state: article });
   };
   let articleButtons = isAuthor ? (
     <div className="articles-card__header__article-buttons">

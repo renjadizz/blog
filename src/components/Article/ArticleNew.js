@@ -35,7 +35,6 @@ function ArticleNew() {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
     setError,
   } = useForm({
     defaultValues: defValues,
@@ -85,7 +84,6 @@ function ArticleNew() {
       setErrorMessage(null);
       setSuccessMessage('Articles was successfull created you will be redirected after 2 seconds');
       setSlug(responseData.article.slug);
-      reset();
     }
   };
   return (
