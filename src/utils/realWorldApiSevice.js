@@ -57,6 +57,16 @@ class realWorldApiService {
       },
     });
   }
+  async articleEdit(data, token, slug) {
+    return await fetch(`https://api.realworld.io/api/articles/${slug}`, {
+      method: 'PUT',
+      body: data,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  }
   async sendData(url) {
     try {
       const res = await fetch(url);

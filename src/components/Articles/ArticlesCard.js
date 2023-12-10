@@ -29,6 +29,10 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
   if (user) {
     isAuthor = user.username === author.username;
   }
+  const handleEditClick = () => {
+    let article = [slug, title, description, body, tagList];
+    navigate('/edit-article', { state: article });
+  };
   let articleButtons = isAuthor ? (
     <div className="articles-card__header__article-buttons">
       <Popconfirm
@@ -40,7 +44,9 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
       >
         <Button danger>Delete</Button>
       </Popconfirm>
-      <Button style={{ color: '#52c41a', borderColor: '#52c41a' }}>Edit</Button>
+      <Button style={{ color: '#52c41a', borderColor: '#52c41a' }} onClick={handleEditClick}>
+        Edit
+      </Button>
     </div>
   ) : null;
   return (

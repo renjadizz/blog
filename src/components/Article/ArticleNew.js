@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext, useLocation } from 'react-router-dom';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { Card, Form, Input, Button } from 'antd';
 const { TextArea } = Input;
@@ -8,6 +8,17 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import realWorldApiService from '../../utils/realWorldApiSevice';
 import './ArticleNew.css';
 function ArticleNew() {
+  let location = useLocation();
+  let titleForm = location.state ? 'Edit Article' : 'Create new article';
+  let defValues = {};
+  if (location.state) {
+    defValues = {
+      title: location.state[1],
+      description: location.state[2],
+      body: location.state[3],
+      tags: location.state[4],
+    };
+  }
   const { user } = useOutletContext();
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
@@ -26,19 +37,36 @@ function ArticleNew() {
     formState: { errors, isSubmitting },
     reset,
     setError,
-  } = useForm();
-  const { append, remove } = useFieldArray({
+  } = useForm({
+    defaultValues: defValues,
+  });
+  const {
+    fields: fieldArray,
+    append,
+    remove,
+  } = useFieldArray({
     control,
     name: 'tags',
   });
   const onSubmit = async (data) => {
     let apiService = new realWorldApiService();
-    const response = await apiService.articleNew(
-      JSON.stringify({
-        article: { title: data.title, description: data.description, body: data.body, tagList: data.tags },
-      }),
-      user.token
-    );
+    let response;
+    if (location.state) {
+      response = await apiService.articleEdit(
+        JSON.stringify({
+          article: { title: data.title, description: data.description, body: data.body, tagList: data.tags },
+        }),
+        user.token,
+        location.state[0]
+      );
+    } else {
+      response = await apiService.articleNew(
+        JSON.stringify({
+          article: { title: data.title, description: data.description, body: data.body, tagList: data.tags },
+        }),
+        user.token
+      );
+    }
     const responseData = await response.json();
     if (!response.ok) {
       setErrorMessage('Error number is ' + response.status);
@@ -63,7 +91,7 @@ function ArticleNew() {
   return (
     <div className="sign-up-form">
       <Card className="sign-in-form--width-940">
-        <h2 className="sign-up-form__header">Create new article</h2>
+        <h2 className="sign-up-form__header">{titleForm}</h2>
         <Form onFinish={handleSubmit(onSubmit)} layout="vertical">
           <Form.Item label="Title">
             <Controller
@@ -95,8 +123,8 @@ function ArticleNew() {
           <Form.List name="tags">
             {(fields, { add, remove: formRemove }, { errors }) => (
               <>
-                {fields.map((field, index) => (
-                  <Form.Item label={index === 0 ? 'Tags' : ''} required={false} key={field.key}>
+                {fieldArray.map((field, index) => (
+                  <Form.Item label={index === 0 ? 'Tags' : ''} required={false} key={field.id}>
                     <Form.Item {...field} validateTrigger={['onChange', 'onBlur']} noStyle>
                       <Controller
                         name={`tags[${index}]`}

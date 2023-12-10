@@ -24,6 +24,7 @@ function App() {
         <Route element={<PrivateRoutes />}>
           <Route path="/profile" element={<Profile />} />
           <Route path="/new-article" element={<ArticleNew />} />
+          <Route path="/edit-article" element={<ArticleNew />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
