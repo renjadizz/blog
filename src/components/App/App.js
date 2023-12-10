@@ -8,6 +8,7 @@ import SignIn from '../SignIn/SignIn';
 import Profile from '../Profile/Profile';
 import ArticleNew from '../Article/ArticleNew';
 import NotFound from '../NotFound/NotFound';
+import PrivateRoutes from '../../utils/PrivateRoutes';
 import './App.css';
 
 function App() {
@@ -20,8 +21,10 @@ function App() {
         <Route path="/articles/:id" element={<Article />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/new-article" element={<ArticleNew />} />
+        <Route element={<PrivateRoutes />}>
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/new-article" element={<ArticleNew />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

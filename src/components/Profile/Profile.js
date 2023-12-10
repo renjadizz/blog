@@ -1,6 +1,6 @@
 /* eslint-disable quotes */
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { Card, Form, Input, Button } from 'antd';
 import * as z from 'zod';
@@ -13,6 +13,7 @@ function Profile() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const navigate = useNavigate();
+  const { user } = useOutletContext();
   useEffect(() => {
     if (successMessage) {
       setTimeout(() => {
@@ -35,14 +36,20 @@ function Profile() {
     formState: { errors, isSubmitting },
     reset,
     setError,
-  } = useForm({ resolver: zodResolver(signUpSchema) });
+  } = useForm({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      username: user.username,
+      email: user.email,
+      bio: user.bio,
+      image: user.image,
+    },
+  });
   const onSubmit = async (data) => {
-    let user = localStorage.getItem('user');
-    user = JSON.parse(user);
     let apiService = new realWorldApiService();
     const response = await apiService.editProfile(
       JSON.stringify({ user: { username: data.username, email: data.email, bio: data.bio, image: data.image } }),
-      user.user.token
+      user.token
     );
     const responseData = await response.json();
     if (!response.ok) {

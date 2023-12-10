@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { Card, Form, Input, Button } from 'antd';
 const { TextArea } = Input;
@@ -8,6 +8,7 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import realWorldApiService from '../../utils/realWorldApiSevice';
 import './ArticleNew.css';
 function ArticleNew() {
+  const { user } = useOutletContext();
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const [slug, setSlug] = useState(null);
@@ -31,21 +32,18 @@ function ArticleNew() {
     name: 'tags',
   });
   const onSubmit = async (data) => {
-    let user = localStorage.getItem('user');
-    user = JSON.parse(user);
     let apiService = new realWorldApiService();
     const response = await apiService.articleNew(
       JSON.stringify({
         article: { title: data.title, description: data.description, body: data.body, tagList: data.tags },
       }),
-      user.user.token
+      user.token
     );
     const responseData = await response.json();
     if (!response.ok) {
       setErrorMessage('Error number is ' + response.status);
       if (responseData.errors) {
         const errors = responseData.errors;
-        console.log(errors);
         if (errors.title) {
           setError('title', { type: 'server', message: errors.title });
         } else if (errors.description) {
