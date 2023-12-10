@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import './ArticlesCard.css';
 import { truncate } from 'lodash';
 import Markdown from 'react-markdown';
+import { useState } from 'react';
 
 import realWorldApiService from '../../utils/realWorldApiSevice';
 import heartEmpty from '../../icons/heart_empty.svg';
@@ -12,6 +13,7 @@ import heartFull from '../../icons/heart_full.svg';
 function ArticlesCard({ articleInfo, isFull, user = null }) {
   const navigate = useNavigate();
   const { slug, title, description, tagList, favorited, favoritesCount, createdAt, author, body = null } = articleInfo;
+  const [like, setLike] = useState(favorited);
   let renderString = '';
   if (body) {
     renderString = body.replace(/\\n/g, '\n');
@@ -32,6 +34,19 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
   const handleEditClick = () => {
     let article = [slug, title, description, body, tagList];
     navigate(`/articles/${slug}/edit`, { state: article });
+  };
+  const handleHeartClick = async () => {
+    let auth = localStorage.getItem('user');
+    if (auth) {
+      auth = JSON.parse(auth);
+      let apiService = new realWorldApiService();
+      const response = await apiService.articleLike(slug, auth.user.token);
+      if (response instanceof Error || !response.ok) message.error('Error occured');
+      else {
+        setLike(true);
+        message.success('Article was liked');
+      }
+    } else message.error('You need to Log in to Like');
   };
   let articleButtons = isAuthor ? (
     <div className="articles-card__header__article-buttons">
@@ -57,10 +72,15 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
             <Link to={`/articles/${slug}`}>{isFull ? title : truncate(title, { length: 60 })}</Link>
           </span>
           <span className="articles-card__header__likes">
-            {favorited ? (
+            {like ? (
               <img src={heartFull} alt="heartFull" className="articles-card__header__heart" />
             ) : (
-              <img className="articles-card__header__heart" src={heartEmpty} alt="heartEmpty" />
+              <img
+                className="articles-card__header__heart"
+                src={heartEmpty}
+                alt="heartEmpty"
+                onClick={handleHeartClick}
+              />
             )}
             <span>{favoritesCount}</span>
           </span>

@@ -67,6 +67,14 @@ class realWorldApiService {
       },
     });
   }
+  async articleLike(slug, token) {
+    return await fetch(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
   async sendData(url) {
     try {
       const res = await fetch(url);
