@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Pagination } from 'antd';
+import { useLocation } from 'react-router-dom';
 
 import Loading from '../Loading/Loading';
 import realWorldApiService from '../../utils/realWorldApiSevice';
@@ -14,10 +15,17 @@ function Articles() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const itemsPerPage = 5;
+  const location = useLocation();
+
   async function fetchData(pageNumber) {
     setLoading(true);
     let data = new realWorldApiService();
-    data = await data.getArticles(pageNumber);
+    let auth = localStorage.getItem('user');
+    if (auth) {
+      auth = JSON.parse(auth);
+      auth = auth.user.token;
+    } else auth = null;
+    data = await data.getArticles(pageNumber, auth);
     if (data instanceof Error) setError(error.message);
     else {
       setTotalArticles(data.articlesCount);
@@ -32,7 +40,9 @@ function Articles() {
   useEffect(() => {
     fetchData(currentPage);
   }, [currentPage]);
-
+  useEffect(() => {
+    fetchData(currentPage);
+  }, [location.key]);
   return (
     <div className="articles">
       {loading ? <Loading /> : null}
@@ -47,6 +57,7 @@ function Articles() {
             defaultCurrent={1}
             pageSize={itemsPerPage}
             total={totalArticles}
+            showSizeChanger={false}
             onChange={(page) => setCurrentPage(page)}
           />
         </>

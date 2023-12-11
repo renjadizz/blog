@@ -3,9 +3,9 @@ class realWorldApiService {
   _articlesUrl = 'https://api.realworld.io/api/articles?limit=5';
   _articleUrl = 'https://api.realworld.io/api/articles/';
 
-  async getArticles(pageNumber) {
+  async getArticles(pageNumber, token = null) {
     const offset = (pageNumber - 1) * 5;
-    return await this.sendData(`${this._articlesUrl}&offset=${offset}`);
+    return await this.sendData(`${this._articlesUrl}&offset=${offset}`, token);
   }
   async getArticle(slug) {
     return await this.sendData(this._articleUrl + slug);
@@ -75,9 +75,17 @@ class realWorldApiService {
       },
     });
   }
-  async sendData(url) {
+  async sendData(url, token = null) {
     try {
-      const res = await fetch(url);
+      let options = {};
+      if (token) {
+        options = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      }
+      const res = await fetch(url, options);
       if (!res.ok) {
         throw new ResourceError('Error number is ' + res.status);
       }
