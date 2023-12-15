@@ -14,6 +14,7 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
   const navigate = useNavigate();
   const { slug, title, description, tagList, favorited, favoritesCount, createdAt, author, body = null } = articleInfo;
   const [like, setLike] = useState(favorited);
+  const [favoritesCountState, setFavoritesCountState] = useState(favoritesCount);
   let renderString = '';
   if (body) {
     renderString = body.replace(/\\n/g, '\n');
@@ -35,7 +36,7 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
     let article = [slug, title, description, body, tagList];
     navigate(`/articles/${slug}/edit`, { state: article });
   };
-  const handleHeartClick = async () => {
+  const handleLikeClick = async () => {
     let auth = localStorage.getItem('user');
     if (auth) {
       auth = JSON.parse(auth);
@@ -43,8 +44,25 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
       const response = await apiService.articleLike(slug, auth.user.token);
       if (response instanceof Error || !response.ok) message.error('Error occured');
       else {
-        setLike(true);
+        let resJson = await response.json();
+        setLike(resJson.article.favorited);
+        setFavoritesCountState(resJson.article.favoritesCount);
         message.success('Article was liked');
+      }
+    } else message.error('You need to Log in to Like');
+  };
+  const handleUnLikeClick = async () => {
+    let auth = localStorage.getItem('user');
+    if (auth) {
+      auth = JSON.parse(auth);
+      let apiService = new realWorldApiService();
+      const response = await apiService.articleUnLike(slug, auth.user.token);
+      if (response instanceof Error || !response.ok) message.error('Error occured');
+      else {
+        let resJson = await response.json();
+        setLike(resJson.article.favorited);
+        setFavoritesCountState(resJson.article.favoritesCount);
+        message.success('Article was unliked');
       }
     } else message.error('You need to Log in to Like');
   };
@@ -73,16 +91,21 @@ function ArticlesCard({ articleInfo, isFull, user = null }) {
           </span>
           <span className="articles-card__header__likes">
             {like ? (
-              <img src={heartFull} alt="heartFull" className="articles-card__header__heart" />
+              <img
+                src={heartFull}
+                alt="heartFull"
+                className="articles-card__header__heart"
+                onClick={handleUnLikeClick}
+              />
             ) : (
               <img
                 className="articles-card__header__heart"
                 src={heartEmpty}
                 alt="heartEmpty"
-                onClick={handleHeartClick}
+                onClick={handleLikeClick}
               />
             )}
-            <span>{favoritesCount}</span>
+            <span>{favoritesCountState}</span>
           </span>
           <div>
             {tagList.map((object, i) => (

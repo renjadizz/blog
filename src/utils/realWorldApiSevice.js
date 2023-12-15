@@ -75,6 +75,14 @@ class realWorldApiService {
       },
     });
   }
+  async articleUnLike(slug, token) {
+    return await fetch(`https://api.realworld.io/api/articles/${slug}/favorite`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
   async sendData(url, token = null) {
     try {
       let options = {};
