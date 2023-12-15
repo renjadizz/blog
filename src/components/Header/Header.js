@@ -20,11 +20,16 @@ function Header() {
   if (userStorage) {
     user = JSON.parse(userStorage);
   }
-
+  const handleMyArticlesClick = () => {
+    navigate('/profile/articles');
+  };
   const userSide = user ? (
     <>
       <Button type="text" onClick={handleCreateNewArticleClick}>
         Create Article
+      </Button>
+      <Button type="text" onClick={handleMyArticlesClick}>
+        My Articles
       </Button>
       <div className="profile" onClick={handleProfileClick}>
         <span>{user.user.username}</span>

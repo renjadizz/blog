@@ -23,6 +23,7 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route element={<PrivateRoutes />}>
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/articles" element={<Articles />} />
           <Route path="/new-article" element={<ArticleNew />} />
           <Route path="/articles/:id/edit" element={<ArticleNew />} />
         </Route>

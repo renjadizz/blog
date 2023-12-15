@@ -16,20 +16,26 @@ function Articles() {
   const [error, setError] = useState(null);
   const itemsPerPage = 5;
   const location = useLocation();
-
+  //console.log(location, '/profile/articles');
   async function fetchData(pageNumber) {
     setLoading(true);
     let data = new realWorldApiService();
     let auth = localStorage.getItem('user');
+    let authToken = null;
+    let authUsername = null;
     if (auth) {
       auth = JSON.parse(auth);
-      auth = auth.user.token;
-    } else auth = null;
-    data = await data.getArticles(pageNumber, auth);
+      authToken = auth.user.token;
+      authUsername = auth.user.username;
+    }
+    data = await data.getArticles(pageNumber, authToken);
     if (data instanceof Error) setError(error.message);
     else {
-      setTotalArticles(data.articlesCount);
       let articlesAll = data.articles;
+      if (location.pathname === '/profile/articles') {
+        articlesAll = articlesAll.filter((article) => article.author.username === authUsername);
+        setTotalArticles(articlesAll.length);
+      } else setTotalArticles(data.articlesCount);
       setArticles(articlesAll);
     }
     setLoading(false);
